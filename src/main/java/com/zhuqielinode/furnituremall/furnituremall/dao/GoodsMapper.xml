@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhuqielinode.furnituremall.furnituremall.dao.GoodsMapper">
+  <resultMap id="BaseResultMap" type="com.zhuqielinode.furnituremall.furnituremall.po.Goods">
+    <id column="goodsId" jdbcType="INTEGER" property="goodsid" />
+    <result column="goodsName" jdbcType="VARCHAR" property="goodsname" />
+    <result column="goodsPrice" jdbcType="DOUBLE" property="goodsprice" />
+    <result column="goodsImage" jdbcType="VARCHAR" property="goodsimage" />
+    <result column="goodsType" jdbcType="VARCHAR" property="goodstype" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="starttime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    goodsId, goodsName,  goodsPrice, goodsImage, goodsType, startTime, endTime,status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goods_table
+    where goodsId = #{goodsid,jdbcType=INTEGER}
+  </select>
+  <select id="typeSelect" parameterType="java.lang.String"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goods_table
+    where goodsType = #{goodstype,jdbcType=VARCHAR}
+  </select>
+  <select id="userOrder" parameterType="java.lang.String" resultType="com.zhuqielinode.furnituremall.furnituremall.po.Order">
+    select
+     goodsId, openId, status, createTime, payTime,orderId
+    from order_list
+    where openId = #{openId,jdbcType=VARCHAR}
+  </select>
+  <select id="AllOrder" parameterType="java.lang.String" resultType="com.zhuqielinode.furnituremall.furnituremall.po.Order">
+    select
+    goodsId, openId, status, createTime, payTime,orderId
+    from order_list
+    order by goodsId
+  </select>
+  <select id="AllGoods"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goods_table
+    order by goodsId
+  </select>
+  <select id="fuzzySelectGoods" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goods_table
+    where goodsName like concat('%',#{keywords},'%')
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from goods_table
+    where goodsId = #{goodsid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.Goods">
+    insert into goods_table (goodsId, goodsName,
+      goodsPrice, goodsImage, goodsType, 
+      startTime, endTime)
+    values (#{goodsid,jdbcType=INTEGER}, #{goodsname,jdbcType=VARCHAR},
+      #{goodsprice,jdbcType=DOUBLE}, #{goodsimage,jdbcType=VARCHAR}, #{goodstype,jdbcType=VARCHAR},
+      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.Goods">
+    insert into goods_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsid != null">
+        goodsId,
+      </if>
+      <if test="goodsname != null">
+        goodsName,
+      </if>
+      <if test="goodsprice != null">
+        goodsPrice,
+      </if>
+      <if test="goodsimage != null">
+        goodsImage,
+      </if>
+      <if test="goodstype != null">
+        goodsType,
+      </if>
+      <if test="starttime != null">
+        startTime,
+      </if>
+      <if test="endtime != null">
+        endTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsid != null">
+        #{goodsid,jdbcType=INTEGER},
+      </if>
+      <if test="goodsname != null">
+        #{goodsname,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsprice != null">
+        #{goodsprice,jdbcType=DOUBLE},
+      </if>
+      <if test="goodsimage != null">
+        #{goodsimage,jdbcType=VARCHAR},
+      </if>
+      <if test="goodstype != null">
+        #{goodstype,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.Goods">
+    update goods_table
+    <set>
+      <if test="goodsname != null">
+        goodsName = #{goodsname,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsprice != null">
+        goodsPrice = #{goodsprice,jdbcType=DOUBLE},
+      </if>
+      <if test="goodsimage != null">
+        goodsImage = #{goodsimage,jdbcType=VARCHAR},
+      </if>
+      <if test="goodstype != null">
+        goodsType = #{goodstype,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where goodsId = #{goodsid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.Goods">
+    update goods_table
+    set goodsName = #{goodsname,jdbcType=VARCHAR},
+      goodsPrice = #{goodsprice,jdbcType=DOUBLE},
+      goodsImage = #{goodsimage,jdbcType=VARCHAR},
+      goodsType = #{goodstype,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=TIMESTAMP}
+    where goodsId = #{goodsid,jdbcType=INTEGER}
+  </update>
+  <update id="updatesaleByPrimaryKeySelective" >
+    update goods_table
+      set  goodsPrice =goodsPrice - #{pay,jdbcType=DOUBLE}
+
+    where goodsId = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <update id="setStatus" >
+    update goods_table
+      set  status =false
+
+    where goodsId = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <insert id="insertSaleHistory" >
+    insert into sale_history (goodsId,
+      openId ,pay
+      )
+    values (#{gid,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{pay,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertOrderList" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.Order">
+    insert into order_list ( orderId,goodsId,
+      openId,status,createTime,payTime
+      )
+    values (#{orderId,jdbcType=VARCHAR},#{goodsId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR},#{status,jdbcType=INTEGER}
+    ,#{createTime,jdbcType=TIMESTAMP}
+    ,#{payTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+</mapper>

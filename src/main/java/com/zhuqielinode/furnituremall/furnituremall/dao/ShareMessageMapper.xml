@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhuqielinode.furnituremall.furnituremall.dao.ShareMessageMapper">
+  <resultMap id="BaseResultMap" type="com.zhuqielinode.furnituremall.furnituremall.po.ShareMessage">
+    <id column="messageId" jdbcType="INTEGER" property="messageId" />
+    <result column="shareImage" jdbcType="VARCHAR" property="shareImage" />
+    <result column="shareMessage" jdbcType="VARCHAR" property="shareMessage" />
+    <result column="hitCount" jdbcType="INTEGER" property="hitCount" />
+    <result column="openid" jdbcType="VARCHAR" property="openId" />
+    <result column="goodId" jdbcType="INTEGER" property="goodsId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    messageId, shareImage, shareMessage, hitCount, openId,goodsId
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from share_table
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from share_table
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.ShareMessage">
+    insert into share_table (messageId, shareImage, shareMessage, 
+      hitCount, openid,goodId)
+    values (#{messageId,jdbcType=INTEGER}, #{shareImage,jdbcType=VARCHAR}, #{shareMessage,jdbcType=VARCHAR},
+      #{hitCount,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR},#{goodsId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.ShareMessage">
+    insert into share_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="messageId != null">
+        messageId,
+      </if>
+      <if test="shareImage != null">
+        shareImage,
+      </if>
+      <if test="shareMessage != null">
+        shareMessage,
+      </if>
+      <if test="hitCount != null">
+        hitCount,
+      </if>
+      <if test="openId != null">
+        openId,
+      </if>
+      <if test="goodsId != null">
+        goodsId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="messageId != null">
+        #{messageId,jdbcType=INTEGER},
+      </if>
+      <if test="shareImage != null">
+        #{shareImage,jdbcType=VARCHAR},
+      </if>
+      <if test="shareMessage != null">
+        #{shareMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="hitCount != null">
+        #{hitCount,jdbcType=INTEGER},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.ShareMessage">
+    update share_table
+    <set>
+      <if test="shareimage != null">
+        shareImage = #{shareImage,jdbcType=VARCHAR},
+      </if>
+      <if test="sharemessage != null">
+        shareMessage = #{shareMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="hitcount != null">
+        hitCount = #{hitCount,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        openId = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsid != null">
+        goodsId = #{goodsId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.ShareMessage">
+    update share_table
+    set shareImage = #{shareImage,jdbcType=VARCHAR},
+      shareMessage = #{shareMessage,jdbcType=VARCHAR},
+      hitCount = #{hitCount,jdbcType=INTEGER},
+      openId = #{openId,jdbcType=VARCHAR}
+      goodsId = #{goodsId,jdbcType=INTEGER}
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </update>
+  <update id="hitMessage" parameterType="java.lang.Integer">
+    update share_table
+    set
+    hitCount = hitCount+1
+    where messageId = #{messagId,jdbcType=INTEGER}
+  </update>
+  <select id="selectUserMessage" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from share_table
+    where openId=#{openId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectHotMessage" resultMap="BaseResultMap">
+ SELECT *
+    FROM share_table
+   ORDER BY hitCount DESC
+  </select>
+  <select id="fuzzySelectMessage" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from share_table
+    where shareMessage like concat('%',#{keywords},'%')
+    ORDER BY hitCount DESC
+  </select>
+</mapper>

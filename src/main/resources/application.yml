@@ -1,0 +1,35 @@
+
+spring:
+    thymeleaf:
+        cache: false
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/furniture_mall?characterEncoding=utf8&auseSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+        password: 123456
+        username: root
+        hikari:
+            pool-name: pool-name:DateHikariCP
+            minimum-idle: 5
+            idle-timeout: 1800000
+            maximum-pool-size: 10
+            auto-commit: true
+            max-lifetime: 1800000
+            connection-timeout: 30000
+            connection-test-query: SELECT 1
+    redis:
+        host: 127.0.0.1
+        port: 6379
+        database: 0
+        timeout: 10000ms
+
+        lettuce:
+            pool:
+                max-active: 8
+                max-wait: 10000ms
+                max-idle: 200
+                min-idle: 5
+
+logging:
+    level:
+        com.zhuqielinode.furnituremall.furnituremall.dao: debug
+

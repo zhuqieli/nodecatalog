@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhuqielinode.furnituremall.furnituremall.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.zhuqielinode.furnituremall.furnituremall.po.User">
+    <id column="openId" jdbcType="VARCHAR" property="openId" />
+    <result column="userTel" jdbcType="VARCHAR" property="userTel" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    openId, userTel, address, nickName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_message
+    where openId = #{openId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user_message
+    where openId = #{openId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.User">
+    insert into user_message (openId,userTel,
+      address, nickName)
+    values (#{openId,jdbcType=VARCHAR}, #{userTel,jdbcType=VARCHAR},
+      #{address,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.User">
+    insert into user_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="openId != null">
+        openId,
+      </if>
+      <if test="userTel != null">
+        userTel,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="nickName != null">
+        nickName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null">
+        #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.User">
+    update user_message
+    <set>
+      <if test="userTel != null">
+        userTel = #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nickName = #{nickName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where openId = #{openId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhuqielinode.furnituremall.furnituremall.po.User">
+    update user_message
+    set
+      userTel = #{userTel,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      nickName = #{nickName,jdbcType=VARCHAR}
+    where openId = #{openId,jdbcType=VARCHAR}
+  </update>
+</mapper>
